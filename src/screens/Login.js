@@ -1,16 +1,18 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import axios from 'axios';
-import { Text, View, StyleSheet, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import {color, mainStyles} from '../../constants';
 import LoginInput from '../components/LoginInput'
- 
+import {
+  setLoginStatus, deleteLoginStatus, auth, login,
+} from '../redux/actions';
 
 
 class Login extends React.Component {
   state = {
     email: '',
     password: '',
-    loginURL: 'http://localhost:3020/api/log-in',
     status:''
   }
   static navigationOptions = {
@@ -18,25 +20,24 @@ class Login extends React.Component {
   }
   
   handleSubmit = () => {
-    const {email,password, loginURL} = this.state;
+    const { email, password } = this.state;
     if (!email || !password) {
-      this.setState({status: "Some fields are empty"});
+      this.props.setLoginStatus('Some fields are empty');
       return;
     }
-    const user = {email, password};
-    console.log(user);
-    axios.post(loginURL, user)
-      .then(response => {
-        if (response.data.new) {
-          this.setState({status: "Invalid email or password."});
-          return;
-        }
-        console.log(response.data);
-        this.props.navigation.navigate('Dialogs')
-      })
+    const user = { email, password };
+    this.props.login(user);
   }
+
+  componentDidUpdate(prevProps) {
+    const { user } = this.props;
+    if (user !== prevProps.user) {
+      this.props.navigation.navigate('Dialogs');
+    }
+  }
+
   render() {
-    const {status} = this.state;
+    const { status } = this.props;
     return (
       <View style={mainStyles.container}>
         <SafeAreaView></SafeAreaView>
@@ -46,9 +47,9 @@ class Login extends React.Component {
        
         <View style={{flex:3, paddingTop:15}}>
           <View><Text style={mainStyles.status}>{status}</Text></View>
-          <LoginInput text='email' type='emailAddress' handleChange={(email) => this.setState({email})} 
+          <LoginInput text='email' type='emailAddress' handleChange={(email) => {this.setState({email}); this.props.deleteLoginStatus()}} 
             value={this.state.email}/>
-          <LoginInput text='password' type='password' handleChange={(password) => this.setState({password})} 
+          <LoginInput text='password' type='password' handleChange={(password) => {this.setState({password}); this.props.deleteLoginStatus()}} 
             value={this.state.password}/>
           
           <TouchableOpacity onPress={this.handleSubmit}>
@@ -119,5 +120,10 @@ const styles = StyleSheet.create({
   }
 
 });
-
-export default Login;
+const mapStateToProps = state => ({
+  status: state.loginStatus,
+  user: state.user,
+});
+export default connect(mapStateToProps, {
+  setLoginStatus, deleteLoginStatus, auth, login,
+})(Login);

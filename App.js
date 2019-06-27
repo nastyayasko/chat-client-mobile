@@ -1,10 +1,16 @@
 import React from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
 
+import reducers from './src/redux/reducer';
 import Login from './src/screens/Login'
 import SignUp from './src/screens/SignUp'
 import Dialogs from './src/screens/Dialogs'
 import Friends from './src/screens/Friends'
+
+const store = createStore(reducers, applyMiddleware(thunk));
 
 const RootStack = createStackNavigator({
   Login: Login,
@@ -35,7 +41,9 @@ const AppContainer = createAppContainer(RootStack);
 export default class App extends React.Component {
   render() {
     return (
-      <AppContainer />
+      <Provider store={store}>
+        <AppContainer />
+      </Provider> 
     );
   } 
 }
