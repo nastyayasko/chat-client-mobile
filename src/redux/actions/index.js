@@ -3,11 +3,14 @@ import axios from 'axios';
 export const saveUser = email => ({ type: 'SAVE_USER', payload: email });
 export const deleteUser = () => ({ type: 'DELETE_USER' });
 
-export const saveConnection = connection => ({ type: 'SAVE_CONNECTION', payload: connection });
-export const deleteConnection = () => ({ type: 'DELETE_CONNECTION' });
-
 export const setLoginStatus = status => ({ type: 'SET_LOGINSTATUS', payload: status });
 export const deleteLoginStatus = () => ({ type: 'DELETE_LOGINSTATUS' });
+
+export const setCurrentDialog = dialog => ({ type: 'SET_CURRENT_DIALOG', payload: dialog });
+
+export const createConnection = socket => ({ type: 'CREATE_CONNECTION', payload: socket });
+export const deleteConnection = () => ({ type: 'DELETE_CONNECTION'});
+
 
 const getUsersSuccess = users => ({ type: 'GET_USERS_SUCCESS', payload: users });
 const getUsersError = error => ({ type: 'GET_USERS_ERROR', payload: error });
@@ -52,4 +55,13 @@ export const signUp = user => (dispatch) => {
   axios.post('http://192.168.0.223:3020/api/sign-up', user)
     .then(({ data }) => dispatch(signUpSuccess(data)))
     .catch(error => dispatch(signUpError(error)));
+};
+
+const getMessagesSuccess = users => ({ type: 'GET_MESSAGES_SUCCESS', payload: users });
+
+export const getMessages = id => (dispatch) => {
+  console.log(id);
+  axios(`http://192.168.0.223:3020/api/messages/${id}`)
+    .then(({ data }) => dispatch(getMessagesSuccess(data)))
+    .catch(error => dispatch(console.log(error)));
 };

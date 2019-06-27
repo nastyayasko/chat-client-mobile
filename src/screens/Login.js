@@ -1,11 +1,11 @@
 import React from 'react';
+import io from 'socket.io-client';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import { Text, View, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import {color, mainStyles} from '../../constants';
 import LoginInput from '../components/LoginInput'
 import {
-  setLoginStatus, deleteLoginStatus, auth, login,
+  setLoginStatus, deleteLoginStatus, auth, login, createConnection,
 } from '../redux/actions';
 
 
@@ -32,6 +32,23 @@ class Login extends React.Component {
   componentDidUpdate(prevProps) {
     const { user } = this.props;
     if (user !== prevProps.user) {
+      const socket = io('http://192.168.0.223:3020', {
+        timeout: 10000,
+        jsonp: false,
+        transports: ['websocket'],
+        autoConnect: false,
+        agent: '-',
+        path: '/', // Whatever your path is
+        pfx: '-',
+        key: '', // Using token-based auth.
+        passphrase: '', // Using cookie auth.
+        cert: '-',
+        ca: '-',
+        ciphers: '-',
+        rejectUnauthorized: '-',
+        perMessageDeflate: '-'
+      });
+      this.props.createConnection(socket);
       this.props.navigation.navigate('Dialogs');
     }
   }
@@ -125,5 +142,5 @@ const mapStateToProps = state => ({
   user: state.user,
 });
 export default connect(mapStateToProps, {
-  setLoginStatus, deleteLoginStatus, auth, login,
+  setLoginStatus, deleteLoginStatus, auth, login, createConnection,
 })(Login);

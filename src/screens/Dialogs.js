@@ -1,20 +1,46 @@
 import React from 'react';
-import { Text, View, StyleSheet, SafeAreaView} from 'react-native';
-import {color, mainStyles} from '../../constants';
+import { connect } from 'react-redux';
+import {View, ScrollView, StyleSheet, SafeAreaView, TouchableOpacity} from 'react-native';
+
+import {mainStyles, color} from '../../constants';
+import Head from '../components/Head';
+import ListItem from '../components/ListItem';
+import { getDialogs, setCurrentDialog } from '../redux/actions';
 
 import Menu from '../components/Menu'
 
 class Dialogs extends React.Component {
   static navigationOptions = {
-    title: 'Dialogs',
+    header: null,
+  }
+  chooseDialog = (id) => {
+    const { dialogs } = this.props;
+    const dialog = dialogs.find(d => d._id === id);
+    this.props.setCurrentDialog(dialog);
+    this.props.navigation.navigate('Chat', {title: dialog.title} );
+  }
+  componentDidMount() {
+    const {user} = this.props;
+    this.props.getDialogs(user._id);
   }
   render () {
+    const { dialogs } = this.props;
     return (
       <View  style={mainStyles.container}>
-        <SafeAreaView></SafeAreaView>
+        <SafeAreaView style={{backgroundColor: color}}></SafeAreaView>
+        <Head title='Dialogs' style={{flex:1}} />
         <View style={{flex:9}}>
-          <Text>Dialogs</Text>
+          <ScrollView>
+            {
+              dialogs.map(dialog => (
+                <TouchableOpacity key={dialog._id} onPress={() => {this.chooseDialog(dialog._id)}}>
+                  <ListItem img={dialog.img} title={dialog.title}/>
+                </TouchableOpacity>  
+              ))
+            }
+          </ScrollView>
         </View>
+        
         <View style={{flex:1}}>
           <Menu/>
         </View>
@@ -24,19 +50,12 @@ class Dialogs extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  button:{
-    backgroundColor: color,
-    width:'70%',
-    borderRadius:25,
-    marginVertical: 35,
-    marginHorizontal:'15%',
-  },
-  login: {
-    paddingVertical:15, 
-    color:'white',
-    fontSize:17,
-    textAlign:'center',
-  },
-})
   
-export default Dialogs;
+})
+
+const mapStateToProps = state => ({
+  user: state.user,
+  dialogs: state.dialogs,
+});
+
+export default connect(mapStateToProps, { getDialogs, setCurrentDialog })(Dialogs);

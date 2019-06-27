@@ -9,6 +9,8 @@ import Login from './src/screens/Login'
 import SignUp from './src/screens/SignUp'
 import Dialogs from './src/screens/Dialogs'
 import Friends from './src/screens/Friends'
+import Chat from './src/screens/Chat'
+
 
 const store = createStore(reducers, applyMiddleware(thunk));
 
@@ -16,7 +18,8 @@ const RootStack = createStackNavigator({
   Login: Login,
   SignUp: SignUp,
   Dialogs: Dialogs,
-  Friends: Friends
+  Friends: Friends,
+  Chat: Chat,
 },
 {
   initialRouteName: 'Login',

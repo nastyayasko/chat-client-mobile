@@ -2,7 +2,9 @@ const initialState = {
   user: {},
   users: [],
   dialogs: [],
+  messages: [],
   connection: null,
+  currentDialog: null,
   loginStatus: '',
 };
 
@@ -39,6 +41,11 @@ export default function reducers(state = initialState, action) {
         ...state,
         loginStatus: '',
       };
+    case 'SET_CURRENT_DIALOG':
+      return {
+        ...state,
+        currentDialog: action.payload,
+      };
     case 'LOGIN_SUCCESS':
       if (action.payload.status) {
         return {
@@ -68,7 +75,12 @@ export default function reducers(state = initialState, action) {
         ...state,
         user: action.payload,
       };
-    case 'SAVE_CONNECTION':
+    case 'GET_MESSAGES_SUCCESS':
+      return {
+        ...state,
+        messages: action.payload,
+      };
+    case 'CREATE_CONNECTION':
       return {
         ...state,
         connection: action.payload,
@@ -76,7 +88,7 @@ export default function reducers(state = initialState, action) {
     case 'DELETE_CONNECTION':
       return {
         ...state,
-        connection: {},
+        connection: null,
       };
     default:
       return state;
