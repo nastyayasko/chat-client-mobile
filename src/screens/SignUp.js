@@ -1,7 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import io from 'socket.io-client';
 import { Text, View, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView} from 'react-native';
+
 import {color, mainStyles} from '../../constants';
-import LoginInput from '../components/LoginInput'
+import LoginInput from '../components/LoginInput';
+import {setLoginStatus, deleteLoginStatus, signUp, createConnection} from '../redux/actions';
 
 class SignUp extends React.Component {
   state ={
@@ -9,52 +13,51 @@ class SignUp extends React.Component {
     firstName: '',
     lastName: '',
     password: '',
-    status:'',
-    url: 'http://localhost:3020/api/sign-up',
   }
   
   static navigationOptions = {
     title: 'Sign Up Form',
   }
-
-  handleChange = (e) => {
-    const {name, value} = e.target;
-    this.setState({[name]: value});
-  }
   
-  handleSubmit = (e) => {
-    e.preventDefault();
-    const {email, firstName, lastName, password, robot, url} = this.state;
-    if(!email || !firstName || !lastName || !password || !robot){
-      this.setState({status: "Some fields are empty"});
+  handleSubmit = () => {
+    const {email, firstName, lastName, password} = this.state;
+    if(!email || !firstName || !lastName || !password){
+      this.props.setLoginStatus("Some fields are empty");
       return;
     }
     const user = {email, firstName, lastName, password}
-    // axios.post(url, user)
-    //   .then(response => {
-    //     if (response.data.client) {
-    //       this.setState({status: "User with this email already exists."});
-    //       return;
-    //     }
-    //     login(response.data);
-    //   })
-    console.log('done')
-    console.log(user)
+    this.props.signUp(user);
   }
+
+  componentDidUpdate(prevProps) {
+    const { user } = this.props;
+    if (user !== prevProps.user) {
+      const socket = io('http://192.168.0.245:3020');
+      socket.emit('email', user);
+      this.props.createConnection(socket);
+      this.props.navigation.navigate('Dialogs');
+    }
+  }
+
   render () {
-    const {email, firstName, lastName, password, status} = this.state;
+    const {email, firstName, lastName, password} = this.state;
+    const {status} = this.props;
     return (
       <View  style={mainStyles.container}>
         <SafeAreaView></SafeAreaView>
         <View><Text style={mainStyles.status}>{status}</Text></View>
         <View>
-          <LoginInput text='First Name' onChange={this.handleChange} name='firstName' value={firstName}/>
-          <LoginInput text='Last Name' onChange={this.handleChange} name='lastName' value={lastName}/>
-          <LoginInput text='Email' onChange={this.handleChange} name='email' value={email}/>
-          <LoginInput text='Password' onChange={this.handleChange} name='password' value={password}/>
+          <LoginInput text='First Name' name='firstName' value={firstName} 
+            handleChange={(firstName) => {this.setState({firstName}); this.props.deleteLoginStatus()}} />
+          <LoginInput text='Last Name' name='lastName' value={lastName}
+            handleChange={(lastName) => {this.setState({lastName}); this.props.deleteLoginStatus()}}/>
+          <LoginInput text='Email' name='email' value={email}
+            handleChange={(email) => {this.setState({email}); this.props.deleteLoginStatus()}}/>
+          <LoginInput text='Password' name='password' value={password}
+            handleChange={(password) => {this.setState({password}); this.props.deleteLoginStatus()}}/>
         </View>
         
-        <TouchableOpacity onPress={()=> this.props.navigation.navigate('Dialogs')}>
+        <TouchableOpacity onPress={this.handleSubmit}>
           <View style={styles.button}>
             <Text style={styles.login}>Sign Up</Text>
           </View>
@@ -86,6 +89,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: color,
   },
-})
+});
 
-export default SignUp;
+const mapStateToProps = state => ({
+  user: state.user,
+  status: state.loginStatus,
+});
+
+export default connect(mapStateToProps, {setLoginStatus, deleteLoginStatus, signUp, createConnection})(SignUp);

@@ -2,7 +2,10 @@ import React from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
 
 export default function ListItem (props) {
- const {img, title} = props;
+  let {img, title} = props;
+  if (!img) {
+    img = 'https://www.achievesuccesstutoring.com/wp-content/uploads/2019/05/no-photo-icon-22.jpg.png';
+  }
   return (
     <View style={styles.item}>
       <View style={{flex:1}}>

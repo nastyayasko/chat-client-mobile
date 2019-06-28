@@ -25,6 +25,7 @@ class Dialogs extends React.Component {
   }
   render () {
     const { dialogs } = this.props;
+    const groupDialogs = dialogs.filter(dialog => dialog.type === 'group');
     return (
       <View  style={mainStyles.container}>
         <SafeAreaView style={{backgroundColor: color}}></SafeAreaView>
@@ -32,7 +33,7 @@ class Dialogs extends React.Component {
         <View style={{flex:9}}>
           <ScrollView>
             {
-              dialogs.map(dialog => (
+              groupDialogs.map(dialog => (
                 <TouchableOpacity key={dialog._id} onPress={() => {this.chooseDialog(dialog._id)}}>
                   <ListItem img={dialog.img} title={dialog.title}/>
                 </TouchableOpacity>  
@@ -42,7 +43,7 @@ class Dialogs extends React.Component {
         </View>
         
         <View style={{flex:1}}>
-          <Menu/>
+          <Menu navigation={this.props.navigation}/>
         </View>
       </View>
     )

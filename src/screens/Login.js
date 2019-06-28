@@ -2,7 +2,7 @@ import React from 'react';
 import io from 'socket.io-client';
 import { connect } from 'react-redux';
 import { Text, View, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
-import {color, mainStyles} from '../../constants';
+import {color, mainStyles, socketObj} from '../../constants';
 import LoginInput from '../components/LoginInput'
 import {
   setLoginStatus, deleteLoginStatus, auth, login, createConnection,
@@ -13,7 +13,6 @@ class Login extends React.Component {
   state = {
     email: '',
     password: '',
-    status:''
   }
   static navigationOptions = {
     header: null
@@ -27,27 +26,14 @@ class Login extends React.Component {
     }
     const user = { email, password };
     this.props.login(user);
+    this.setState({email:'', password:''});
   }
 
   componentDidUpdate(prevProps) {
     const { user } = this.props;
     if (user !== prevProps.user) {
-      const socket = io('http://192.168.0.223:3020', {
-        timeout: 10000,
-        jsonp: false,
-        transports: ['websocket'],
-        autoConnect: false,
-        agent: '-',
-        path: '/', // Whatever your path is
-        pfx: '-',
-        key: '', // Using token-based auth.
-        passphrase: '', // Using cookie auth.
-        cert: '-',
-        ca: '-',
-        ciphers: '-',
-        rejectUnauthorized: '-',
-        perMessageDeflate: '-'
-      });
+      const socket = io('http://192.168.0.245:3020');
+      socket.emit('email', user);
       this.props.createConnection(socket);
       this.props.navigation.navigate('Dialogs');
     }
@@ -55,6 +41,7 @@ class Login extends React.Component {
 
   render() {
     const { status } = this.props;
+    const { email, password } = this.state;
     return (
       <View style={mainStyles.container}>
         <SafeAreaView></SafeAreaView>
@@ -64,10 +51,8 @@ class Login extends React.Component {
        
         <View style={{flex:3, paddingTop:15}}>
           <View><Text style={mainStyles.status}>{status}</Text></View>
-          <LoginInput text='email' type='emailAddress' handleChange={(email) => {this.setState({email}); this.props.deleteLoginStatus()}} 
-            value={this.state.email}/>
-          <LoginInput text='password' type='password' handleChange={(password) => {this.setState({password}); this.props.deleteLoginStatus()}} 
-            value={this.state.password}/>
+          <LoginInput text='email' type='emailAddress' value={email} handleChange={(email) => {this.setState({email}); this.props.deleteLoginStatus()}} />
+          <LoginInput text='password' type='password' value={password} handleChange={(password) => {this.setState({password}); this.props.deleteLoginStatus()}} />
           
           <TouchableOpacity onPress={this.handleSubmit}>
             <View style={styles.button}>

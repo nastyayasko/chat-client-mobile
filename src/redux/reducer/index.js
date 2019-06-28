@@ -21,10 +21,17 @@ export default function reducers(state = initialState, action) {
         ...state,
         user: {},
       };
-    case 'GET_USERS_SUCCESS':
+    case 'ADD_MESSAGE':
       return {
         ...state,
-        users: action.payload,
+        messages: [...state.messages, action.payload],
+      };
+    case 'GET_USERS_SUCCESS':
+      const {user} = state;
+      const users = action.payload.filter(u => u._id !== user._id);
+      return {
+        ...state,
+        users,
       };
     case 'GET_DIALOGS_SUCCESS':
       return {
