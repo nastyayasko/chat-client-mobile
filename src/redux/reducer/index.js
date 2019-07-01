@@ -87,6 +87,12 @@ export default function reducers(state = initialState, action) {
         ...state,
         messages: action.payload,
       };
+    case 'CREATE_DIALOG_SUCCESS':
+      return {
+        ...state,
+        dialogs:[...state.dialogs, action.payload],
+        currentDialog: action.payload,
+      };
     case 'CREATE_CONNECTION':
       return {
         ...state,

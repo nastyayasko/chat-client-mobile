@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { ScrollView, View, TouchableOpacity, SafeAreaView} from 'react-native';
 import {mainStyles} from '../../constants';
-import { getUsers, setCurrentDialog } from '../redux/actions';
+import { getUsers, setCurrentDialog, createDialog } from '../redux/actions';
 import ListItem from '../components/ListItem';
 import Menu from '../components/Menu'
 
@@ -11,23 +11,30 @@ class Friends extends React.Component {
     title: 'Friends',
   }
   chooseDialog = (id) => {
-    const { users, dialogs, connection } = this.props;
+    const { user, users, dialogs } = this.props;
     const dialog = dialogs.find(d => d.type === 'individual' && d.users.includes(id));
     if (!dialog) {
-      connection.on('current-dialog', (currentDialog) => {
-        this.props.setCurrentDialog(currentDialog);
-      });
-      connection.emit('connect-user', id);
-      return;
+      const newDialog = {
+        type: 'individual',
+        users: [user._id, id]
+      }
+      this.props.createDialog(newDialog);
+    } else {
+      this.props.setCurrentDialog(dialog);
     }
-    this.props.setCurrentDialog(dialog);
-    const currentUser = users.find(u => u._id === id);
-    this.props.navigation.navigate('Chat', {title: `${currentUser.firstName} ${currentUser.lastName}`});
   }
+
   componentDidMount() {
-    const {connection} = this.props;
     this.props.getUsers();
-    
+  }
+
+  componentDidUpdate(prevProps) {
+    const { currentDialog, user, users} = this.props;
+    if (currentDialog !== prevProps.currentDialog) {
+      const currentUserId = currentDialog.users.find(u => u !== user._id);
+      const currentUser = users.find(u => u._id === currentUserId);
+      this.props.navigation.navigate('Chat', {title: `${currentUser.firstName} ${currentUser.lastName}`});
+    }
   }
   render () {
     const { users } = this.props;
@@ -58,7 +65,7 @@ const mapStateToProps = state => ({
   user: state.user,
   users: state.users,
   dialogs: state.dialogs,
-  connection: state.connection,
+  currentDialog: state.currentDialog,
 });
 
-export default connect(mapStateToProps, { getUsers, setCurrentDialog })(Friends);
+export default connect(mapStateToProps, { getUsers, setCurrentDialog, createDialog })(Friends);

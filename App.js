@@ -10,6 +10,7 @@ import SignUp from './src/screens/SignUp'
 import Dialogs from './src/screens/Dialogs'
 import Friends from './src/screens/Friends'
 import Chat from './src/screens/Chat'
+import GroupForm from './src/screens/GroupForm'
 
 
 const store = createStore(reducers, applyMiddleware(thunk));
@@ -20,6 +21,7 @@ const RootStack = createStackNavigator({
   Dialogs: Dialogs,
   Friends: Friends,
   Chat: Chat,
+  GroupForm: GroupForm,
 },
 {
   initialRouteName: 'Login',

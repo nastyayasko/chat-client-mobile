@@ -22,7 +22,7 @@ class Menu extends React.Component {
         <TouchableOpacity onPress={() => navigation.navigate('Friends')}> 
           <Image style={styles.img} source={require('../images/users.png')}></Image>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Friends')}>
+        <TouchableOpacity onPress={() => navigation.navigate('GroupForm')}>
           <Image style={styles.img} source={require('../images/add.png')}></Image>
         </TouchableOpacity>
         <TouchableOpacity onPress={this.handleLogout}>
@@ -43,8 +43,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   img: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
   }
 })
 const mapStateToProps = state => ({
