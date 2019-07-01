@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import io from 'socket.io-client';
 import { Text, View, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView} from 'react-native';
 
-import {color, mainStyles} from '../../constants';
+import {color, mainStyles} from '../constants';
 import LoginInput from '../components/LoginInput';
 import {setLoginStatus, deleteLoginStatus, signUp, createConnection} from '../redux/actions';
 
@@ -34,6 +34,12 @@ class SignUp extends React.Component {
     if (user !== prevProps.user) {
       const socket = io('http://192.168.0.245:3020');
       socket.emit('email', user);
+      socket.on('chat', (data) => {
+        const {currentDialog} = this.props;
+        if (currentDialog && currentDialog._id === data.currentDialog) {
+          this.props.addMessage(data);       
+        }
+      });
       this.props.createConnection(socket);
       this.props.navigation.navigate('Dialogs');
     }

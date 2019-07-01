@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Image, View, StyleSheet, TouchableOpacity} from 'react-native';
 
-import {color} from '../../constants';
+import {color} from '../constants';
 import {deleteConnection} from '../redux/actions';
 
 class Menu extends React.Component {

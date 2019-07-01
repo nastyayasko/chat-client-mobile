@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet} from 'react-native';
-import {color} from '../../constants';
+import {color} from '../constants';
 
 function Head(props) {
   const { title } = props;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet, TextInput } from 'react-native';
-import {color} from '../../constants'
+import {color} from '../constants'
 
 export default function LoginInput (props) {
  const {text, handleChange, value, type} = props;

@@ -2,7 +2,8 @@ import React from 'react';
 import io from 'socket.io-client';
 import { connect } from 'react-redux';
 import { Text, View, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
-import {color, mainStyles, socketObj} from '../../constants';
+
+import {color, mainStyles, socketObj} from '../constants';
 import LoginInput from '../components/LoginInput'
 import {
   setLoginStatus, deleteLoginStatus, auth, login, createConnection,

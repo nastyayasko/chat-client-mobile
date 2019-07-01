@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {View, ScrollView, StyleSheet, SafeAreaView, TouchableOpacity} from 'react-native';
 
-import {mainStyles, color} from '../../constants';
+import {mainStyles, color} from '../constants';
 import Head from '../components/Head';
 import ListItem from '../components/ListItem';
 import { getDialogs, setCurrentDialog } from '../redux/actions';

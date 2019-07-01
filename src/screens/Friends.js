@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { ScrollView, View, TouchableOpacity, SafeAreaView} from 'react-native';
-import {mainStyles} from '../../constants';
+import {mainStyles} from '../constants';
 import { getUsers, setCurrentDialog, createDialog } from '../redux/actions';
 import ListItem from '../components/ListItem';
 import Menu from '../components/Menu'

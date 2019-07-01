@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {View, ScrollView, SafeAreaView, TouchableOpacity, Image, TextInput, StyleSheet, KeyboardAvoidingView} from 'react-native';
 
-import {mainStyles} from '../../constants';
+import {mainStyles} from '../constants';
 import { getMessages, addMessage } from '../redux/actions';
 import Message from '../components/Message';
 
@@ -28,8 +28,8 @@ class Chat extends React.Component {
   componentDidMount() {
     const {currentDialog, connection} = this.props;
     this.props.getMessages(currentDialog._id);
-
     connection.on('chat', (data) => {
+      const {currentDialog} = this.props;
       if (currentDialog && currentDialog._id === data.currentDialog) {
         this.props.addMessage(data);       
       }
@@ -58,7 +58,8 @@ class Chat extends React.Component {
         
         <View style={styles.message}>
           <View style={{flex:5}}>
-            <TextInput style={styles.input} value={message} onChangeText={(message) => this.setState({message})}></TextInput>
+            <TextInput style={styles.input} value={message} placeholder='Message'
+            onChangeText={(message) => this.setState({message})}></TextInput>
           </View>
           <View style={{flex:1}}>
             <TouchableOpacity onPress={this.sendMessage}>
