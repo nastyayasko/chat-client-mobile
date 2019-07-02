@@ -1,9 +1,11 @@
 import React from 'react';
 import io from 'socket.io-client';
 import { connect } from 'react-redux';
+import * as Facebook from 'expo-facebook';
 import { Text, View, StyleSheet, TouchableOpacity, SafeAreaView, YellowBox } from 'react-native';
+import { Google } from 'expo';
 
-import {color, mainStyles, socketObj} from '../constants';
+import {color, mainStyles, socketObj, iOSclientId, fbId} from '../constants';
 import LoginInput from '../components/LoginInput'
 import {
   setLoginStatus, deleteLoginStatus, auth, login, createConnection,
@@ -40,6 +42,31 @@ class Login extends React.Component {
       this.props.navigation.navigate('Dialogs');
     }
   }
+  googleSignIn = async () => {
+    const result = await Google.logInAsync({
+      iosClientId: iOSclientId,
+    });
+    if (result.type === 'success') {
+      console.log(result);
+    }
+  }
+  facebookSignIn = async () => {
+    try {
+      const result = await Facebook.logInWithReadPermissionsAsync(fbId, {
+        permissions: ['public_profile'],
+      });
+      if (result.type === 'success') {
+        fetch(`https://graph.facebook.com/me?access_token=${result.token}`)
+          .then(resp => resp.json())
+          .then(resp => {
+            console.log(resp);
+          })
+      
+      }
+    } catch ({ message }) {
+      alert(`Facebook Login Error: ${message}`);
+    }
+  }
 
   render() {
     const { status } = this.props;
@@ -70,12 +97,12 @@ class Login extends React.Component {
           </View>
         </View>
         <View style={{flex:2}}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={this.googleSignIn}>
             <View style={styles.google}>
               <Text style={styles.login}>Login with Google</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={this.facebookSignIn}>
             <View style={styles.google}>
               <Text style={styles.login}>Login with Facebook</Text>
             </View>

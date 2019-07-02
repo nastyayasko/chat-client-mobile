@@ -26,3 +26,6 @@ export const socketObj = {
   rejectUnauthorized: '-',
   perMessageDeflate: '-'
 };
+
+export const iOSclientId = '191604032064-urrd7j2aof5grmkfvrhiark91lur0ere.apps.googleusercontent.com';
+export const fbId = '385892928702080';
