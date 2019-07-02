@@ -4,10 +4,12 @@ import {color} from '../constants'
 
 export default function LoginInput (props) {
  const {text, handleChange, value, type} = props;
+ // secureTextEntry 
   return (
     <View style={styles.container}>
       <Text style={{color: color}}>{text}</Text>
-      <TextInput placeholder={text} textContentType={type} onChangeText={handleChange} value={value} name={text} style={styles.input}></TextInput>
+      <TextInput placeholder={text} textContentType={type} onChangeText={handleChange} 
+      value={value} name={text} style={styles.input}></TextInput>
     </View>
   )
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import io from 'socket.io-client';
 import { connect } from 'react-redux';
-import { Text, View, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, SafeAreaView, YellowBox } from 'react-native';
 
 import {color, mainStyles, socketObj} from '../constants';
 import LoginInput from '../components/LoginInput'
@@ -9,6 +9,7 @@ import {
   setLoginStatus, deleteLoginStatus, auth, login, createConnection,
 } from '../redux/actions';
 
+YellowBox.ignoreWarnings(['Remote debugger']);
 
 class Login extends React.Component {
   state = {
@@ -33,7 +34,7 @@ class Login extends React.Component {
   componentDidUpdate(prevProps) {
     const { user } = this.props;
     if (user !== prevProps.user) {
-      const socket = io('http://192.168.0.94:3020');
+      const socket = io('http://192.168.0.202:3020');
       socket.emit('email', user);
       this.props.createConnection(socket);
       this.props.navigation.navigate('Dialogs');

@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Header } from 'react-navigation';
 import {View, ScrollView, SafeAreaView, TouchableOpacity, Image, TextInput, StyleSheet, KeyboardAvoidingView} from 'react-native';
 
 import {mainStyles} from '../constants';
@@ -40,6 +41,10 @@ class Chat extends React.Component {
     const {messages, user} = this.props;
     const {message} = this.state;
     return(
+      <KeyboardAvoidingView
+        keyboardVerticalOffset = {Header.HEIGHT + 27}
+        style = {{ flex: 1 }}
+        behavior = "height" >
       <View style={mainStyles.container} >
         <SafeAreaView></SafeAreaView>
         <View style={{flex:9}}>
@@ -55,9 +60,8 @@ class Chat extends React.Component {
           </ScrollView>
         </View>
         
-        
         <View style={styles.message}>
-          <View style={{flex:5}}>
+          <View style={{flex:5,height: 60}}>
             <TextInput style={styles.input} value={message} placeholder='Message'
             onChangeText={(message) => this.setState({message})}></TextInput>
           </View>
@@ -68,6 +72,8 @@ class Chat extends React.Component {
           </View>
         </View>
       </View>
+      </KeyboardAvoidingView>
+      
     )
   }
 }

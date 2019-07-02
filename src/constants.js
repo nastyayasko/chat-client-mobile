@@ -16,15 +16,10 @@ export const color = '#30d0fe';
 
 
 export const socketObj = {
-  // timeout: 10000,
-  // jsonp: false,
-  // transports: ['websocket'],
-  // autoConnect: false,
   agent: '-',
-  path: '/', // Whatever your path is
   pfx: '-',
-  key: '', // Using token-based auth.
-  passphrase: '', // Using cookie auth.
+  key: '-', // Using token-based auth.
+  passphrase: '-', // Using cookie auth.
   cert: '-',
   ca: '-',
   ciphers: '-',

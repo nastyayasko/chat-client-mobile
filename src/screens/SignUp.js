@@ -32,7 +32,7 @@ class SignUp extends React.Component {
   componentDidUpdate(prevProps) {
     const { user } = this.props;
     if (user !== prevProps.user) {
-      const socket = io('http://192.168.0.245:3020');
+      const socket = io('http://192.168.0.202:3020');
       socket.emit('email', user);
       socket.on('chat', (data) => {
         const {currentDialog} = this.props;
