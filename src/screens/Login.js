@@ -36,7 +36,7 @@ class Login extends React.Component {
   componentDidUpdate(prevProps) {
     const { user } = this.props;
     if (user !== prevProps.user) {
-      const socket = io('http://192.168.0.202:3020');
+      const socket = io('http://192.168.0.99:3020');
       socket.emit('email', user);
       this.props.createConnection(socket);
       this.props.navigation.navigate('Dialogs');

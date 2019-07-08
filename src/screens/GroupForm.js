@@ -37,7 +37,6 @@ class GroupForm extends React.Component {
     }
     users.push(user._id);
     const dialog = {type: 'group', title, img, users};
-    console.log(dialog);
     this.props.createDialog(dialog);
   }
   componentDidMount(){
