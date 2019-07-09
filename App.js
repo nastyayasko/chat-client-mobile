@@ -1,5 +1,5 @@
 import React from 'react';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { createStackNavigator, createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
@@ -15,13 +15,9 @@ import GroupForm from './src/screens/GroupForm'
 
 const store = createStore(reducers, applyMiddleware(thunk));
 
-const RootStack = createStackNavigator({
-  Login: Login,
-  SignUp: SignUp,
-  Dialogs: Dialogs,
-  Friends: Friends,
-  Chat: Chat,
-  GroupForm: GroupForm,
+const Auth = createStackNavigator({
+  Login,
+  SignUp,
 },
 {
   initialRouteName: 'Login',
@@ -39,6 +35,42 @@ const RootStack = createStackNavigator({
     }
   }
 }
+);
+
+
+const ChatStack = createStackNavigator({
+  Dialogs,
+  Friends,
+  Chat,
+  GroupForm,
+},
+{
+  initialRouteName: 'Dialogs',
+  defaultNavigationOptions: {
+    headerStyle: {
+      backgroundColor: '#30d0fe',
+    },
+    headerTintColor: '#fff'
+  }
+},
+{
+  defaultNavigationOptions: {
+    headerStyle: {
+      backgroundColor: '#ecf0f1',
+    }
+  }
+}
+);
+
+
+const RootStack = createSwitchNavigator(
+  {
+    Auth,
+    Chat: ChatStack,
+  },
+  {
+    initialRouteName: 'Auth',
+  }
 );
 
 const AppContainer = createAppContainer(RootStack);
