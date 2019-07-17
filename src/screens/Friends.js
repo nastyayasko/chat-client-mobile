@@ -11,7 +11,7 @@ class Friends extends React.Component {
     title: 'Friends',
   }
   chooseDialog = (id) => {
-    const { user, users, dialogs } = this.props;
+    const { user, dialogs } = this.props;
     const dialog = dialogs.find(d => d.type === 'individual' && d.users.includes(id));
     if (!dialog) {
       const newDialog = {

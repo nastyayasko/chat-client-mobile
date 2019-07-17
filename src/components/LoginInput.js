@@ -9,7 +9,7 @@ export default function LoginInput (props) {
     <View style={styles.container}>
       <Text style={{color: color}}>{text}</Text>
       <TextInput placeholder={text} textContentType={type} onChangeText={handleChange} 
-      value={value} name={text} style={styles.input}></TextInput>
+      value={value} name={text} style={styles.input} secureTextEntry={type==='password'?true:false}></TextInput>
     </View>
   )
 }
