@@ -5,7 +5,7 @@ import * as Facebook from 'expo-facebook';
 import { Text, View, StyleSheet, TouchableOpacity, SafeAreaView, YellowBox } from 'react-native';
 import { Google } from 'expo';
 
-import {color, mainStyles, socketObj, iOSclientId, fbId} from '../constants';
+import {color, mainStyles, socketObj, iOSclientId, fbId, HOST} from '../constants';
 import LoginInput from '../components/LoginInput'
 import {
   setLoginStatus, deleteLoginStatus, auth, login, createConnection,
@@ -36,7 +36,7 @@ class Login extends React.Component {
   componentDidUpdate(prevProps) {
     const { user } = this.props;
     if (user !== prevProps.user) {
-      const socket = io('http://192.168.0.93:3020');
+      const socket = io(`http://${HOST}:3020`);
       socket.emit('email', user);
       this.props.createConnection(socket);
       this.props.navigation.navigate('Dialogs');

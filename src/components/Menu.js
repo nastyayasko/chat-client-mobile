@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Image, View, StyleSheet, TouchableOpacity} from 'react-native';
+import { Image, View, StyleSheet, TouchableOpacity } from 'react-native';
 
 import {color} from '../constants';
 import {deleteConnection} from '../redux/actions';
@@ -10,7 +10,7 @@ class Menu extends React.Component {
     const {connection} = this.props;
     connection.disconnect();
     this.props.deleteConnection();
-    this.props.navigation.navigate('Login')
+    this.props.navigation.navigate('Login');
   }
   render(){
     const {navigation} = this.props;

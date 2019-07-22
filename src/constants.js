@@ -29,3 +29,4 @@ export const socketObj = {
 
 export const iOSclientId = '191604032064-urrd7j2aof5grmkfvrhiark91lur0ere.apps.googleusercontent.com';
 export const fbId = '385892928702080';
+export const HOST = '192.168.0.217';

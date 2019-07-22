@@ -7,7 +7,7 @@ import {
 import * as ImagePicker from 'expo-image-picker'
 import * as Permissions from 'expo-permissions';
 
-import {color, mainStyles} from '../constants';
+import {color, mainStyles, HOST} from '../constants';
 import LoginInput from '../components/LoginInput';
 import {setLoginStatus, deleteLoginStatus, signUp, createConnection} from '../redux/actions';
 
@@ -37,7 +37,7 @@ class SignUp extends React.Component {
   componentDidUpdate(prevProps) {
     const { user } = this.props;
     if (user !== prevProps.user) {
-      const socket = io('http://192.168.0.93:3020');
+      const socket = io(`http://${HOST}:3020`);
       socket.emit('email', user);
       socket.on('chat', (data) => {
         const {currentDialog} = this.props;
