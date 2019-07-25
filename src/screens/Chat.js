@@ -60,16 +60,18 @@ class Chat extends React.Component {
           </ScrollView>
         </View>
         
-        <View style={styles.message}>
-          <View style={{flex:5,height: 60}}>
-            <TextInput style={styles.input} value={message} placeholder='Message'
-            onChangeText={(message) => this.setState({message})}></TextInput>
-          </View>
-          <View style={{flex:1}}>
-            <TouchableOpacity onPress={this.sendMessage}>
-              <Image style={styles.img} source={require('../images/send.png')}></Image>
-            </TouchableOpacity>
-          </View>
+        <View style={{flex:1, justifyContent:'center'}}>
+          <View style={styles.message}>
+            <View style={{flex:5,height: 60}}>
+              <TextInput style={styles.input} value={message} placeholder='Message'
+              onChangeText={(message) => this.setState({message})}></TextInput>
+            </View>
+            <View style={{flex:1}}>
+              <TouchableOpacity onPress={this.sendMessage}>
+                <Image style={styles.img} source={require('../images/send.png')}></Image>
+              </TouchableOpacity>
+            </View>
+            </View>
         </View>
       </View>
       </KeyboardAvoidingView>

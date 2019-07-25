@@ -5,6 +5,7 @@ const initialState = {
   messages: [],
   connection: null,
   currentDialog: null,
+  currentPage: 'Friends',
   loginStatus: '',
 };
 
@@ -102,6 +103,11 @@ export default function reducers(state = initialState, action) {
       return {
         ...state,
         connection: null,
+      };
+    case 'CHANGE_PAGE':
+      return {
+        ...state,
+        currentPage: action.payload,
       };
     default:
       return state;

@@ -36,10 +36,10 @@ class Login extends React.Component {
   componentDidUpdate(prevProps) {
     const { user } = this.props;
     if (user !== prevProps.user) {
-      const socket = io(`http://${HOST}:3020`);
+      const socket = io(HOST);
       socket.emit('email', user);
       this.props.createConnection(socket);
-      this.props.navigation.navigate('Dialogs');
+      this.props.navigation.navigate('MenuPage');
     }
   }
   googleSignIn = async () => {
@@ -67,6 +67,10 @@ class Login extends React.Component {
       alert(`Facebook Login Error: ${message}`);
     }
   }
+
+  componentWillUnmount(){
+    this.props.deleteLoginStatus(); 
+   }
 
   render() {
     const { status } = this.props;

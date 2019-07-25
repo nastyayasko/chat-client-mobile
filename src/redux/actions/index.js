@@ -17,7 +17,7 @@ export const deleteConnection = () => ({ type: 'DELETE_CONNECTION'});
 const getUsersSuccess = users => ({ type: 'GET_USERS_SUCCESS', payload: users });
 
 export const getUsers = () => (dispatch) => {
-  axios(`http://${HOST}:3020/api/all-users`)
+  axios(`${HOST}api/all-users`)
     .then(({ data }) => dispatch(getUsersSuccess(data)))
     .catch(error => dispatch(console.log(error)));
 };
@@ -25,7 +25,7 @@ export const getUsers = () => (dispatch) => {
 const getDialogsSuccess = users => ({ type: 'GET_DIALOGS_SUCCESS', payload: users });
 
 export const getDialogs = id => (dispatch) => {
-  axios(`http://${HOST}:3020/api/dialogs/${id}`)
+  axios(`${HOST}api/dialogs/${id}`)
     .then(({ data }) => dispatch(getDialogsSuccess(data)))
     .catch(error => dispatch(console.log(error)));
 };
@@ -33,7 +33,7 @@ export const getDialogs = id => (dispatch) => {
 const loginSuccess = users => ({ type: 'LOGIN_SUCCESS', payload: users });
 
 export const login = user => (dispatch) => {
-  axios.post(`http://${HOST}:3020/api/log-in`, user)
+  axios.post(`${HOST}api/log-in`, user)
     .then(({ data }) => dispatch(loginSuccess(data)))
     .catch(error => dispatch(console.log(error)));
 };
@@ -41,7 +41,7 @@ export const login = user => (dispatch) => {
 const authSuccess = users => ({ type: 'AUTH_SUCCESS', payload: users });
 
 export const auth = user => (dispatch) => {
-  axios.post(`http://${HOST}:3020/api/auth`, user)
+  axios.post(`${HOST}api/auth`, user)
     .then(({ data }) => dispatch(authSuccess(data)))
     .catch(error => dispatch(console.log(error)));
 };
@@ -57,7 +57,7 @@ export const signUp = (user, file) => (dispatch) => {
   if (file) {
     currentUser.append('file', file, file.name);
   }
-  axios.post(`http://${HOST}:3020/api/sign-up`, currentUser)
+  axios.post(`${HOST}api/sign-up`, currentUser)
     .then(({ data }) => dispatch(signUpSuccess(data)))
     .catch(error => dispatch(console.log(error)));
 };
@@ -65,7 +65,7 @@ export const signUp = (user, file) => (dispatch) => {
 const getMessagesSuccess = users => ({ type: 'GET_MESSAGES_SUCCESS', payload: users });
 
 export const getMessages = id => (dispatch) => {
-  axios(`http://${HOST}:3020/api/messages/${id}`)
+  axios(`${HOST}api/messages/${id}`)
     .then(({ data }) => dispatch(getMessagesSuccess(data)))
     .catch(error => dispatch(console.log(error)));
 };
@@ -73,7 +73,9 @@ export const getMessages = id => (dispatch) => {
 const createDialogSuccess = dialog => ({ type: 'CREATE_DIALOG_SUCCESS', payload: dialog });
 
 export const createDialog = dialog => (dispatch) => {
-  axios.post(`http://${HOST}:3020/api/dialogs`, dialog)
+  axios.post(`${HOST}api/dialogs`, dialog)
     .then(({ data }) => dispatch(createDialogSuccess(data)))
     .catch(error => dispatch(console.log(error)));
 };
+
+export const changePage = page => ({ type: 'CHANGE_PAGE', payload: page });

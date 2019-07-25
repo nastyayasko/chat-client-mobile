@@ -7,8 +7,7 @@ import thunk from 'redux-thunk';
 import reducers from './src/redux/reducer';
 import Login from './src/screens/Login'
 import SignUp from './src/screens/SignUp'
-import Dialogs from './src/screens/Dialogs'
-import Friends from './src/screens/Friends'
+import MenuPage from './src/screens/MenuPage'
 import Chat from './src/screens/Chat'
 import GroupForm from './src/screens/GroupForm'
 
@@ -23,15 +22,14 @@ const Auth = createStackNavigator({
   initialRouteName: 'Login',
   defaultNavigationOptions: {
     headerStyle: {
-      backgroundColor: '#30d0fe',
+      backgroundColor: '#f7f7f7',
     },
-    headerTintColor: '#fff'
   }
 },
 {
   defaultNavigationOptions: {
     headerStyle: {
-      backgroundColor: '#ecf0f1',
+      backgroundColor: '#f7f7f7',
     }
   }
 }
@@ -39,24 +37,22 @@ const Auth = createStackNavigator({
 
 
 const ChatStack = createStackNavigator({
-  Dialogs,
-  Friends,
+  MenuPage,
   Chat,
   GroupForm,
 },
 {
-  initialRouteName: 'Dialogs',
+  initialRouteName: 'MenuPage',
   defaultNavigationOptions: {
     headerStyle: {
-      backgroundColor: '#30d0fe',
+      backgroundColor: '#f7f7f7',
     },
-    headerTintColor: '#fff'
   }
 },
 {
   defaultNavigationOptions: {
     headerStyle: {
-      backgroundColor: '#ecf0f1',
+      backgroundColor: '#f7f7f7',
     }
   }
 }

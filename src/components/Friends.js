@@ -1,15 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { ScrollView, View, TouchableOpacity, SafeAreaView} from 'react-native';
-import {mainStyles} from '../constants';
+import { ScrollView, TouchableOpacity, } from 'react-native';
+
 import { getUsers, setCurrentDialog, createDialog } from '../redux/actions';
-import ListItem from '../components/ListItem';
-import Menu from '../components/Menu'
+import ListItem from './ListItem';
+
 
 class Friends extends React.Component {
-  static navigationOptions = {
-    title: 'Friends',
-  }
+  
   chooseDialog = (id) => {
     const { user, dialogs } = this.props;
     const dialog = dialogs.find(d => d.type === 'individual' && d.users.includes(id));
@@ -39,24 +37,15 @@ class Friends extends React.Component {
   render () {
     const { users } = this.props;
     return (
-      <View  style={mainStyles.container}>
-        <SafeAreaView></SafeAreaView>
-        <View style={{flex:9}}>
-          <ScrollView>
-            {
-              users.map(user => (
-                <TouchableOpacity key={user._id} onPress={() => {this.chooseDialog(user._id)}}>
-                  <ListItem img={user.img} title={`${user.firstName} ${user.lastName}`}/>
-                </TouchableOpacity>  
-              ))
-            }
-          </ScrollView>
-        </View>
-        
-        <View style={{flex:1}}>
-          <Menu navigation={this.props.navigation}/>
-        </View>
-      </View>
+      <ScrollView>
+        {
+          users.map(user => (
+            <TouchableOpacity key={user._id} onPress={() => {this.chooseDialog(user._id)}}>
+              <ListItem img={user.img} title={`${user.firstName} ${user.lastName}`}/>
+            </TouchableOpacity>  
+          ))
+        }
+      </ScrollView>
     )
   }
 }

@@ -6,12 +6,12 @@ import {color, mainStyles} from '../constants';
 import LoginInput from '../components/LoginInput';
 import MyCheckBox from '../components/MyCheckBox';
 import {createDialog, setLoginStatus, deleteLoginStatus, getUsers} from '../redux/actions';
+import Menu from '../components/Menu'
 
 class GroupForm extends React.Component {
   state ={
     title: '',
     chosen: {},
-    img: 'https://www.applozic.com/resources/lib/advanced/css/app/images/mck-icon-group.png',
   }
   
   static navigationOptions = {
@@ -24,7 +24,7 @@ class GroupForm extends React.Component {
   }
   handleSubmit = () => {
     const { user } = this.props;
-    const { title, chosen, img } = this.state;
+    const { title, chosen } = this.state;
     const users = [];
     for (const key in chosen) {
       if (chosen[key]) {
@@ -36,7 +36,7 @@ class GroupForm extends React.Component {
       return;
     }
     users.push(user._id);
-    const dialog = {type: 'group', title, img, users};
+    const dialog = {type: 'group', title, users};
     this.props.createDialog(dialog);
   }
   componentDidMount(){
@@ -55,7 +55,7 @@ class GroupForm extends React.Component {
     return (
       <View  style={mainStyles.container}>
         <SafeAreaView></SafeAreaView>
-        <View style={{flex:5}}>
+        <View style={{flex:8}}>
           <View><Text style={mainStyles.status}>{status}</Text></View>
           <LoginInput text='Title' name='title' value={title} 
             handleChange={(title) => {this.setState({title}); this.props.deleteLoginStatus()}} />
@@ -67,13 +67,14 @@ class GroupForm extends React.Component {
             })}
           </ScrollView>
         </View>
-        <View style={{flex:1}}>
+        <View style={{flex:1, justifyContent: 'center'}}>
           <TouchableOpacity onPress={this.handleSubmit}>
             <View style={styles.button}>
               <Text style={styles.login}>Create</Text>
             </View>
           </TouchableOpacity>
         </View>
+        
       </View>
     )
   }
@@ -85,11 +86,10 @@ const styles = StyleSheet.create({
     backgroundColor: color,
     width:'70%',
     borderRadius:25,
-    marginVertical: 25,
     marginHorizontal:'15%',
   },
   login: {
-    paddingVertical:15, 
+    paddingVertical:13, 
     color:'white',
     fontSize:17,
     textAlign:'center',

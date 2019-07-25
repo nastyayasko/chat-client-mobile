@@ -7,7 +7,7 @@ import {
 import * as ImagePicker from 'expo-image-picker'
 import * as Permissions from 'expo-permissions';
 
-import {color, mainStyles, HOST} from '../constants';
+import {color, mainStyles, HOST, randomInteger} from '../constants';
 import LoginInput from '../components/LoginInput';
 import {setLoginStatus, deleteLoginStatus, signUp, createConnection} from '../redux/actions';
 
@@ -36,8 +36,9 @@ class SignUp extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { user } = this.props;
+    console.log(user !== prevProps.user)
     if (user !== prevProps.user) {
-      const socket = io(`http://${HOST}:3020`);
+      const socket = io(HOST);
       socket.emit('email', user);
       socket.on('chat', (data) => {
         const {currentDialog} = this.props;
@@ -46,8 +47,12 @@ class SignUp extends React.Component {
         }
       });
       this.props.createConnection(socket);
-      this.props.navigation.navigate('Dialogs');
+      this.props.navigation.navigate('MenuPage');
     }
+  }
+
+  componentWillUnmount(){
+   this.props.deleteLoginStatus(); 
   }
 
   selectPic = async () => {
@@ -59,7 +64,7 @@ class SignUp extends React.Component {
     const photo = {
       uri,
       type: 'image/jpeg',
-      name: 'photo.jpg',
+      name: randomInteger(1, 999) + randomInteger(1, 999)  + '.jpg',
     };
     this.setState({img: photo}); 
   };
@@ -71,7 +76,7 @@ class SignUp extends React.Component {
     const photo = {
       uri,
       type: 'image/jpeg',
-      name: 'photo.jpg',
+      name: randomInteger(1, 999) + randomInteger(1, 999)  + '.jpg',
     };
     this.setState({img: photo});  
   };
