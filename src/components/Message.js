@@ -4,8 +4,8 @@ import { Text, View, StyleSheet} from 'react-native';
 export default function Message (props) {
  const {message, email} = props;
   return (
-    <View style={email === message.email?styles.myMessage:styles.message}>
-      <View style={styles.item}>
+    <View style={email === message.email ? styles.myMessage : styles.message}>
+      <View style={[styles.item, email === message.email ? {backgroundColor: '#e2ffc5'} : {backgroundColor:'white'}]}>
         <Text style={styles.name}>{message.email}</Text>
         <Text style={styles.time}>{message.time}</Text>
         <Text style={styles.name}>{message.message}</Text>
@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     width: '75%',
     margin: 8,
-    backgroundColor: 'white',
     borderRadius: 15,
   },
   name: {

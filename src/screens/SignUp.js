@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import io from 'socket.io-client';
 import {
-  Text, View, StyleSheet, SafeAreaView, TouchableOpacity, Image,
+  Text, View, StyleSheet, SafeAreaView, TouchableOpacity, Image, ScrollView,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'
 import * as Permissions from 'expo-permissions';
@@ -88,41 +88,45 @@ class SignUp extends React.Component {
       <View style={mainStyles.container}>
         <SafeAreaView></SafeAreaView>
         <View><Text style={mainStyles.status}>{status}</Text></View>
-        <View>
-          <LoginInput text='First Name' name='firstName' value={firstName} 
-            handleChange={(firstName) => {this.setState({firstName}); this.props.deleteLoginStatus()}} />
-          <LoginInput text='Last Name' name='lastName' value={lastName}
-            handleChange={(lastName) => {this.setState({lastName}); this.props.deleteLoginStatus()}}/>
-          <LoginInput text='Email' name='email' type='emailAddress' value={email}
-            handleChange={(email) => {this.setState({email}); this.props.deleteLoginStatus()}}/>
-          <LoginInput text='Password' type='password' name='password' value={password}
-            handleChange={(password) => {this.setState({password}); this.props.deleteLoginStatus()}}/>
-        </View>
-        <View style={styles.container}>
-            <Text style={{color: color}}>Photo</Text>
-        </View>
-        <View  style={styles.photo}>
+        <ScrollView>
           <View>
-            <TouchableOpacity onPress={this.selectPic}>
-              <View style={styles.buttonPic}>
-                <Text style={styles.login}>Gallery</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.takePic}>
-              <View style={styles.buttonPic}>
-                <Text style={styles.login}>Camera</Text>
-              </View>
-            </TouchableOpacity>
+            <LoginInput text='First Name' name='firstName' value={firstName} 
+              handleChange={(firstName) => {this.setState({firstName}); this.props.deleteLoginStatus()}} />
+            <LoginInput text='Last Name' name='lastName' value={lastName}
+              handleChange={(lastName) => {this.setState({lastName}); this.props.deleteLoginStatus()}}/>
+            <LoginInput text='Email' name='email' type='emailAddress' value={email}
+              handleChange={(email) => {this.setState({email}); this.props.deleteLoginStatus()}}/>
+            <LoginInput text='Password' type='password' name='password' value={password}
+              handleChange={(password) => {this.setState({password}); this.props.deleteLoginStatus()}}/>
           </View>
-          <View>
-            {img?<Image source={{ uri: img.uri }} style={{ width: 100, height: 100 }} />:null}
+          <View style={styles.container}>
+              <Text style={{color: color}}>Photo</Text>
           </View>
-        </View>
-        <TouchableOpacity onPress={this.handleSubmit}>
-          <View style={styles.button}>
-            <Text style={styles.login}>Sign Up</Text>
+          <View  style={styles.photo}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+              <TouchableOpacity onPress={this.selectPic}>
+                <View style={styles.buttonPic}>
+                  <Image style={styles.img} 
+                    source={require('../images/gallery.png')}></Image>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={this.takePic}>
+                <View style={styles.buttonPic}>
+                  <Image style={styles.img} 
+                    source={require('../images/camera.png')}></Image>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View>
+              {img?<Image source={{ uri: img.uri }} style={{ width: 100, height: 100 }} />:null}
+            </View>
           </View>
-        </TouchableOpacity>
+          <TouchableOpacity onPress={this.handleSubmit}>
+            <View style={styles.button}>
+              <Text style={styles.login}>Sign Up</Text>
+            </View>
+          </TouchableOpacity>
+        </ScrollView>
       </View>
     )
   }
@@ -150,10 +154,8 @@ const styles = StyleSheet.create({
   },
   buttonPic:{
     backgroundColor: color,
-    width:'70%',
     borderRadius:25,
-    marginVertical: 5,
-    marginHorizontal:'15%',
+    margin: 5,
   },
   login: {
     paddingVertical:15, 
@@ -167,6 +169,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: color,
   },
+  img: {
+    margin: 10,
+    width: 40,
+    height: 40,
+  }
 });
 
 const mapStateToProps = state => ({

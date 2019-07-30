@@ -1,11 +1,11 @@
 import React from 'react';
 import io from 'socket.io-client';
 import { connect } from 'react-redux';
-import * as Facebook from 'expo-facebook';
-import { Text, View, StyleSheet, TouchableOpacity, SafeAreaView, YellowBox } from 'react-native';
-import { Google } from 'expo';
+import { 
+  Text, View, StyleSheet, TouchableOpacity, SafeAreaView, YellowBox, KeyboardAvoidingView,
+} from 'react-native';
 
-import {color, mainStyles, socketObj, iOSclientId, fbId, HOST} from '../constants';
+import {color, mainStyles, HOST} from '../constants';
 import LoginInput from '../components/LoginInput'
 import {
   setLoginStatus, deleteLoginStatus, auth, login, createConnection,
@@ -42,32 +42,7 @@ class Login extends React.Component {
       this.props.navigation.navigate('MenuPage');
     }
   }
-  googleSignIn = async () => {
-    const result = await Google.logInAsync({
-      iosClientId: iOSclientId,
-    });
-    if (result.type === 'success') {
-      console.log(result);
-    }
-  }
-  facebookSignIn = async () => {
-    try {
-      const result = await Facebook.logInWithReadPermissionsAsync(fbId, {
-        permissions: ['public_profile'],
-      });
-      if (result.type === 'success') {
-        fetch(`https://graph.facebook.com/me?access_token=${result.token}`)
-          .then(resp => resp.json())
-          .then(resp => {
-            console.log(resp);
-          })
-      
-      }
-    } catch ({ message }) {
-      alert(`Facebook Login Error: ${message}`);
-    }
-  }
-
+  
   componentWillUnmount(){
     this.props.deleteLoginStatus(); 
    }
@@ -76,52 +51,40 @@ class Login extends React.Component {
     const { status } = this.props;
     const { email, password } = this.state;
     return (
-      <View style={mainStyles.container}>
-        <SafeAreaView></SafeAreaView>
-          <View style={styles.header}>
+      <KeyboardAvoidingView
+        style = {{ flex: 1 }}
+        behavior = "height" >
+        <View style={[mainStyles.container, {justifyContent: 'center'}]}>
+          <SafeAreaView></SafeAreaView>
+          <View style={{ paddingTop:15}}>
             <Text style={styles.paragraph}>LOGIN</Text>
-          </View>
-       
-        <View style={{flex:3, paddingTop:15}}>
-          <View><Text style={mainStyles.status}>{status}</Text></View>
-          <LoginInput text='email' type='emailAddress' value={email} handleChange={(email) => {this.setState({email}); this.props.deleteLoginStatus()}} />
-          <LoginInput text='password' type='password' value={password} handleChange={(password) => {this.setState({password}); this.props.deleteLoginStatus()}} />
-          
-          <TouchableOpacity onPress={this.handleSubmit}>
-            <View style={styles.button}>
-              <Text style={styles.login}>Login</Text>
-            </View>
-          </TouchableOpacity>
-          <View>
-            <TouchableOpacity onPress={()=> this.props.navigation.navigate('SignUp')}>
-              <Text style={styles.signup}>Don’t have an account? 
-                <Text style={{textDecorationLine:'underline' }}> Sign up</Text>
-              </Text>
+            <View><Text style={mainStyles.status}>{status}</Text></View>
+            <LoginInput text='email' type='emailAddress' value={email} handleChange={(email) => {this.setState({email}); this.props.deleteLoginStatus()}} />
+            <LoginInput text='password' type='password' value={password} handleChange={(password) => {this.setState({password}); this.props.deleteLoginStatus()}} />
+            
+            <TouchableOpacity onPress={this.handleSubmit}>
+              <View style={styles.button}>
+                <Text style={styles.login}>Login</Text>
+              </View>
             </TouchableOpacity>
+            <View>
+              <TouchableOpacity onPress={()=> this.props.navigation.navigate('SignUp')}>
+                <Text style={styles.signup}>Don’t have an account? 
+                  <Text style={{textDecorationLine:'underline' }}> Sign up</Text>
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-        <View style={{flex:2}}>
-          <TouchableOpacity onPress={this.googleSignIn}>
-            <View style={styles.google}>
-              <Text style={styles.login}>Login with Google</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.facebookSignIn}>
-            <View style={styles.google}>
-              <Text style={styles.login}>Login with Facebook</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </View>
+      </KeyboardAvoidingView>
     );
   } 
 }
 
 const styles = StyleSheet.create({
   header: {
-    flex:1, 
+    flex:1,
     justifyContent: 'flex-end', 
-    flexDirection: 'column'
   },
   paragraph: {
     fontSize: 25,
@@ -133,7 +96,7 @@ const styles = StyleSheet.create({
     backgroundColor: color,
     width:'70%',
     borderRadius:25,
-    marginVertical: 25,
+    marginVertical: 30,
     marginHorizontal:'15%',
   },
   login: {
@@ -146,19 +109,13 @@ const styles = StyleSheet.create({
     color: color,
     textAlign:'center',
   },
-  google: {
-    backgroundColor: color,
-    width:'70%',
-    borderRadius:25,
-    marginBottom: 25,
-    marginHorizontal:'15%'
-  }
-
 });
+
 const mapStateToProps = state => ({
   status: state.loginStatus,
   user: state.user,
 });
+
 export default connect(mapStateToProps, {
   setLoginStatus, deleteLoginStatus, auth, login, createConnection,
 })(Login);

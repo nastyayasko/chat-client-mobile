@@ -45,7 +45,7 @@ class Chat extends React.Component {
         keyboardVerticalOffset = {Header.HEIGHT + 27}
         style = {{ flex: 1 }}
         behavior = "height" >
-      <View style={mainStyles.container} >
+      <View style={[mainStyles.container, {backgroundColor: '#d9e1ee'}]} >
         <SafeAreaView></SafeAreaView>
         <View style={{flex:9}}>
           <ScrollView ref={ref => this.scrollView = ref}
